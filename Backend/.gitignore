@@ -1,0 +1,22 @@
+# .NET
+bin/
+obj/
+
+# User-specific files
+appsettings.Development.json
+userSecrets.json
+
+# IDE-specific files
+.vs/
+.vscode/
+.idea/
+
+# Build results
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# OS generated files
+.DS_Store
+Thumbs.db
