@@ -1,0 +1,35 @@
+# ASP.NET Core build directories
+bin/
+obj/
+
+# Blazor output directories
+wwwroot/
+build/
+dist/
+
+# VS Code settings
+.vscode/
+
+# User-specific files for Visual Studio and Rider
+.idea/
+
+# Node.js modules (ako koristiš Node.js za neki build proces)
+node_modules/
+
+# .NET user-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# MacOS generated files
+.DS_Store
+
+# Environment variables
+.env
+
+# Publish output
+publish/
+
+# JetBrains Rider configuration folder
+.idea/

@@ -1,0 +1,55 @@
+@page "/login"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>Login</h3>
+
+<div>
+    <label for="username">Korisničko ime:</label>
+    <input type="text" id="username" @bind="Username" placeholder="Unesite korisničko ime" />
+</div>
+
+<div>
+    <label for="password">Lozinka:</label>
+    <input type="password" id="password" @bind="Password" placeholder="Unesite lozinku" />
+</div>
+
+<button @onclick="LoginUser">Prijavi se</button>
+
+<p>@ErrorMessage</p>
+
+@code {
+    private string Username { get; set; }
+    private string Password { get; set; }
+    private string ErrorMessage { get; set; }
+
+    private async Task LoginUser()
+    {
+        var loginData = new
+        {
+            Username = Username,
+            Password = Password
+        };
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("/api/auth/login", loginData);
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await response.Content.ReadAsStringAsync();
+                // Spremite token u session storage
+                await JSRuntime.InvokeVoidAsync("sessionStorage.setItem", "authToken", token);
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessage = "Neispravno korisničko ime ili lozinka!";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Greška prilikom prijave: {ex.Message}";
+        }
+    }
+}

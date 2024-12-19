@@ -1,0 +1,106 @@
+@page "/"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject AuthService AuthService
+@using Frontend.Models
+
+<h3>Početna stranica</h3>
+
+<input type="text" placeholder="Pretraga" @bind="searchTerm" />
+<select @bind="selectedStatus">
+    <option value="">Svi statusi</option>
+    @foreach (var status in Enum.GetValues<StatusPosiljke>())
+    {
+        <option value="@status">@status</option>
+    }
+</select>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Status</th>
+            <th>Datum kreiranja</th>
+            <th>Datum isporuke</th>
+            <th>Akcije</th>
+            <th>Detalji</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var posiljka in filteredPosiljke)
+        {
+            <tr>
+                <td>@posiljka.Id</td>
+                <td>@posiljka.Naziv</td>
+                <td>@posiljka.Status</td>
+                <td>@posiljka.DatumKreiranja</td>
+                <td>@posiljka.DatumIsporuke</td>
+                <td>
+                    @if (AuthService.IsLoggedIn)
+                    {
+                        <button @onclick="() => NavigateToAddEdit(posiljka.Id)">Izmeni</button>
+                        <button @onclick="() => Delete(posiljka.Id)">Obriši</button>
+                    }
+                </td>
+                <td>
+                    <button @onclick="() => NavigateToDetails(posiljka.Id)">Detalji</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (AuthService.IsLoggedIn)
+{
+    <button class="btn btn-primary" @onclick="NavigateToAdd">Dodaj novu pošiljku</button>
+}
+
+@code {
+    private List<Posiljka> posiljke = new();
+    private string searchTerm = string.Empty;
+    private StatusPosiljke? selectedStatus = null;
+
+    private IEnumerable<Posiljka> filteredPosiljke => posiljke
+        .Where(p => (string.IsNullOrWhiteSpace(searchTerm) || p.Naziv.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            && (selectedStatus == null || p.Status == selectedStatus));
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthService.OnAuthStateChanged += StateHasChanged;  // Prijavite se za događaj
+        await AuthService.CheckLoginStatusAsync();  // Proverite inicijalni status
+        posiljke = await Http.GetFromJsonAsync<List<Posiljka>>("/api/posiljke");
+    }
+
+    private async Task Delete(Guid id)
+    {
+        await Http.DeleteAsync($"/api/posiljke/{id}");
+        posiljke.RemoveAll(p => p.Id == id);
+    }
+
+    private void NavigateToDetails(Guid id)
+    {
+        Navigation.NavigateTo($"/detalji/{id}");
+    }
+
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/addEdit");
+    }
+
+    private void NavigateToAddEdit(Guid id)
+    {
+        Navigation.NavigateTo($"/addEdit/{id}");
+    }
+
+    public void Dispose()
+    {
+        AuthService.OnAuthStateChanged -= StateHasChanged;  // Oslobodite se događaja
+    }
+}
+
+@* <PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app. *@

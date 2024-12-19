@@ -21,7 +21,8 @@ namespace Backend.Controller
 
         [HttpGet]
         public IActionResult GetAll()
-        {
+        {   
+            
             Log.Information("Pregled svih pošiljki");
             return Ok(_service.GetAll());
         }

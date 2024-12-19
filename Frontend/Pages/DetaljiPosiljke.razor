@@ -1,0 +1,54 @@
+@page "/detalji/{Id:guid}"
+@using Frontend.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>Detalji pošiljke</h3>
+
+@if (posiljka == null)
+{
+    <p>Učitavanje podataka...</p>
+}
+else
+{
+    <div>
+        <strong>Id:</strong> @posiljka.Id <br />
+        <strong>Naziv:</strong> @posiljka.Naziv <br />
+        <strong>Status:</strong> @posiljka.Status <br />
+        <strong>Datum kreiranja:</strong> @posiljka.DatumKreiranja.ToString("dd.MM.yyyy") <br />
+        @if (posiljka.DatumIsporuke.HasValue)
+        {
+            <strong>Datum isporuke:</strong> @posiljka.DatumIsporuke.Value.ToString("dd.MM.yyyy")
+        }
+        else
+        {
+            <strong>Datum isporuke: Nema podataka</strong> 
+        }
+    </div>
+}
+
+<button class="btn btn-primary" @onclick="BackToList">Nazad</button>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private Posiljka posiljka;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // GET zahtev prema backendu da preuzmemo detalje pošiljke
+            posiljka = await Http.GetFromJsonAsync<Posiljka>($"/api/posiljke/{Id}");
+        }
+        catch (Exception ex)
+        {
+            // U slučaju greške, možete prikazati poruku ili obraditi grešku
+            Console.WriteLine($"Greška pri učitavanju podataka: {ex.Message}");
+        }
+    }
+
+    private void BackToList()
+    {
+        Navigation.NavigateTo("/"); // Vratite se na listu pošiljki
+    }
+}

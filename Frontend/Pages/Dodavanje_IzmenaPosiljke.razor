@@ -1,0 +1,72 @@
+@page "/addEdit/{Id:guid?}"
+@using Frontend.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>@(Id == null ? "Dodaj novu pošiljku" : "Izmeni pošiljku")</h3>
+
+<EditForm Model="posiljka" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="naziv">Naziv</label>
+        <InputText id="naziv" @bind-Value="posiljka.Naziv" />
+        <ValidationMessage For="@(() => posiljka.Naziv)" />
+    </div>
+
+    <div>
+        <label for="status">Status</label>
+        <InputSelect id="status" @bind-Value="posiljka.Status">
+            @foreach (var status in Enum.GetValues<StatusPosiljke>())
+            {
+                <option value="@status">@status</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => posiljka.Status)" />
+    </div>
+
+    <div>
+        <label for="datumKreiranja">Datum kreiranja</label>
+        <InputDate id="datumKreiranja" @bind-Value="posiljka.DatumKreiranja" />
+        <ValidationMessage For="@(() => posiljka.DatumKreiranja)" />
+    </div>
+
+    <div>
+        <label for="datumIsporuke">Datum isporuke</label>
+        <InputDate id="datumIsporuke" @bind-Value="posiljka.DatumIsporuke" />
+        <ValidationMessage For="@(() => posiljka.DatumIsporuke)" />
+    </div>
+
+    <button type="submit">Spasi</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; } // ID je opcionalan
+
+    private Posiljka posiljka = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Ako postoji ID, učitavamo podatke sa servera
+        if (Id.HasValue)
+        {
+            posiljka = await Http.GetFromJsonAsync<Posiljka>($"/api/posiljke/{Id}");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (Id.HasValue)
+        {
+            await Http.PutAsJsonAsync($"/api/posiljke/{Id}", posiljka); // Ažuriraj postojeću pošiljku
+        }
+        else
+        {
+            await Http.PostAsJsonAsync("/api/posiljke", posiljka); // Dodaj novu pošiljku
+        }
+
+        Navigation.NavigateTo("/");
+    }
+}
