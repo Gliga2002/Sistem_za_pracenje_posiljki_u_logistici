@@ -5,8 +5,8 @@
 @using Frontend.Models
 
 
-<input type="text" placeholder="Pretraga" @bind="searchTerm" class="search-input" />
-<select @bind="selectedStatus" class="status-select">
+<input type="text" placeholder="Pretraga" @bind="searchTerm" @oninput="FilterPosiljke" class="search-input" />
+<select @bind="selectedStatus" class="status-select" @onchange="FilterPosiljke">
     <option value="">Svi statusi</option>
     @foreach (var status in Enum.GetValues<StatusPosiljke>())
     {
@@ -61,8 +61,9 @@
     private StatusPosiljke? selectedStatus = null;
 
     private IEnumerable<Posiljka> filteredPosiljke => posiljke
-        .Where(p => (string.IsNullOrWhiteSpace(searchTerm) || p.Naziv.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-            && (selectedStatus == null || p.Status == selectedStatus));
+    .Where(p => 
+        (string.IsNullOrWhiteSpace(searchTerm) || p.Naziv.Equals(searchTerm, StringComparison.OrdinalIgnoreCase))  // Tačno poređenje naziva
+        && (selectedStatus == null || p.Status == selectedStatus)); 
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,6 +91,12 @@
     private void NavigateToAddEdit(Guid id)
     {
         Navigation.NavigateTo($"/addEdit/{id}");
+    }
+
+    // Filtriraj kada god se unese slovo ili izmeni status
+    private void FilterPosiljke()
+    {
+        StateHasChanged();
     }
 
     public void Dispose()

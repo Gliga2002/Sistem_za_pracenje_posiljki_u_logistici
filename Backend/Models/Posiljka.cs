@@ -3,7 +3,7 @@ namespace Backend.Models
 {
     public class Posiljka
     {
-        public Guid Id { get; set; } 
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Naziv { get; set; } = string.Empty; 
 
         public StatusPosiljke Status { get; set; }

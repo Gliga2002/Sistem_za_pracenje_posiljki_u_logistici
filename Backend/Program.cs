@@ -1,4 +1,5 @@
 using Backend.Models;
+using Backend.Repositories;
 using Backend.Services;
 using FluentValidation;
 using Serilog;
@@ -13,10 +14,15 @@ Log.Logger = new LoggerConfiguration()
 
 
 // Ako hoces jednu instancu tokom cele palikacije koristi Singlton ako zelis novu instancu tokom svakog zahteva koristi Scoped. Zato imas problem sa in memory podacima!!!
-builder.Services.AddScoped<PosiljkeService>();
+ // Register repository and service
+        builder.Services.AddScoped<IPosiljkaRepository, PosiljkaRepository>();
+        builder.Services.AddScoped<PosiljkeService>();
+
 builder.Services.AddScoped<IValidator<Posiljka>, Backend.Validators.PosiljkaValidator>();
 // Dodavanje AuthService u DI kontejner
 builder.Services.AddSingleton<AuthService>(); // Koristite AddScoped ili AddTransient ako je potrebno
+
+
 
 
 builder.Services.AddControllers();

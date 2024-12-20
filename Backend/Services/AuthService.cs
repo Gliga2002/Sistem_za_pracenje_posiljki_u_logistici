@@ -16,23 +16,18 @@ namespace Backend.Services
 
         public AuthResponse Login(string username, string password)
         {
-            // // Proverite korisničke podatke
-            // var user = _users.FirstOrDefault(u => u.Username == username && u.Password == password);
-            // if (user == null)
-            // {
-            //     return null; // Invalid login
-            // }
+    
 
             var noviKorisnik = new User() { Username = username, Password = password };
             _users.Add(noviKorisnik);
             
 
-            // Generisanje tokena (ovde koristimo GUID za demonstraciju)
+         
             var token = Guid.NewGuid().ToString();
 
             
         
-            // Spremanje tokena u memoriji
+           
             _tokens[username] = token;
 
             return new AuthResponse
@@ -59,10 +54,6 @@ namespace Backend.Services
         }
 
           // Metoda za dobijanje svih logovanih korisnika
-    public List<string> GetAllLoggedInUsers()
-    {
-        // Vraća listu svih logovanih korisnika sa njihovim username-ima
-        return _tokens.Keys.ToList();
-    }
+
     }
 }

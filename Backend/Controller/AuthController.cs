@@ -1,6 +1,9 @@
 
+   using Microsoft.AspNetCore.Mvc;
 using Backend.Services;
-using Microsoft.AspNetCore.Mvc;
+using Backend.Models;
+
+
 
 
 namespace Backend.Controller
@@ -19,9 +22,11 @@ namespace Backend.Controller
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(200, Type = typeof(AuthResponse))]
+        [ProducesResponseType(401)]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-              _logger.LogInformation("U loginu sam!!");
+            _logger.LogInformation("U loginu sam!!");
             var response = _authService.Login(request.Username, request.Password);
             if (response == null)
             {
@@ -29,13 +34,13 @@ namespace Backend.Controller
                 return Unauthorized(new { message = "Nevalidni kredencijali" });
             }
 
-            
             _logger.LogInformation("Korisnik {Username} je uspešno ulogovan", request.Username);
             return Ok(response);
         }
-        
-        // ovo mi mozda ni ne treba
+
         [HttpPost("logout")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult Logout([FromBody] LogoutRequest request)
         {
             var result = _authService.Logout(request.Username);
@@ -50,12 +55,15 @@ namespace Backend.Controller
         }
 
         [HttpGet("check")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult CheckLogin([FromQuery] string username)
         {
             var isLoggedIn = _authService.IsLoggedIn(username);
             return Ok(new { IsLoggedIn = isLoggedIn });
         }
     }
+}
 
     public class LoginRequest
     {
@@ -67,4 +75,3 @@ namespace Backend.Controller
     {
         public string Username { get; set; }
     }
-}

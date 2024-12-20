@@ -45,7 +45,10 @@
     [Parameter]
     public Guid? Id { get; set; } // ID je opcionalan
 
-    private Posiljka posiljka = new();
+     private Posiljka posiljka = new()
+    {
+        DatumKreiranja = DateTime.Today, // Početni datum na trenutni datum
+    };
 
     protected override async Task OnInitializedAsync()
     {
