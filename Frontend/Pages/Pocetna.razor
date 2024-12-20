@@ -4,10 +4,9 @@
 @inject AuthService AuthService
 @using Frontend.Models
 
-<h3>Početna stranica</h3>
 
-<input type="text" placeholder="Pretraga" @bind="searchTerm" />
-<select @bind="selectedStatus">
+<input type="text" placeholder="Pretraga" @bind="searchTerm" class="search-input" />
+<select @bind="selectedStatus" class="status-select">
     <option value="">Svi statusi</option>
     @foreach (var status in Enum.GetValues<StatusPosiljke>())
     {
@@ -15,7 +14,7 @@
     }
 </select>
 
-<table>
+<table class="shipment-table">
     <thead>
         <tr>
             <th>ID</th>
@@ -34,17 +33,17 @@
                 <td>@posiljka.Id</td>
                 <td>@posiljka.Naziv</td>
                 <td>@posiljka.Status</td>
-                <td>@posiljka.DatumKreiranja</td>
-                <td>@posiljka.DatumIsporuke</td>
+                <td>@posiljka.DatumKreiranja.ToString("dd.MM.yyyy")</td> <!-- Formatiranje datuma -->
+                <td>@posiljka.DatumIsporuke?.ToString("dd.MM.yyyy")</td> <!-- Formatiranje datuma, null-checked -->
                 <td>
                     @if (AuthService.IsLoggedIn)
                     {
-                        <button @onclick="() => NavigateToAddEdit(posiljka.Id)">Izmeni</button>
-                        <button @onclick="() => Delete(posiljka.Id)">Obriši</button>
+                        <button class="btn btn-warning" @onclick="() => NavigateToAddEdit(posiljka.Id)">Izmeni</button>
+                        <button class="btn btn-danger" @onclick="() => Delete(posiljka.Id)">Obriši</button>
                     }
                 </td>
                 <td>
-                    <button @onclick="() => NavigateToDetails(posiljka.Id)">Detalji</button>
+                    <button class="btn btn-info" @onclick="() => NavigateToDetails(posiljka.Id)">Detalji</button>
                 </td>
             </tr>
         }

@@ -11,23 +11,32 @@
 }
 else
 {
-    <div>
-        <strong>Id:</strong> @posiljka.Id <br />
-        <strong>Naziv:</strong> @posiljka.Naziv <br />
-        <strong>Status:</strong> @posiljka.Status <br />
-        <strong>Datum kreiranja:</strong> @posiljka.DatumKreiranja.ToString("dd.MM.yyyy") <br />
-        @if (posiljka.DatumIsporuke.HasValue)
-        {
-            <strong>Datum isporuke:</strong> @posiljka.DatumIsporuke.Value.ToString("dd.MM.yyyy")
-        }
-        else
-        {
-            <strong>Datum isporuke: Nema podataka</strong> 
-        }
+    <div class="shipment-details">
+        <div class="detail-item">
+            <strong>Id:</strong> @posiljka.Id
+        </div>
+        <div class="detail-item">
+            <strong>Naziv:</strong> @posiljka.Naziv
+        </div>
+        <div class="detail-item">
+            <strong>Status:</strong> @posiljka.Status
+        </div>
+        <div class="detail-item">
+            <strong>Datum kreiranja:</strong> @posiljka.DatumKreiranja.ToString("dd.MM.yyyy")
+        </div>
+        <div class="detail-item">
+            @if (posiljka.DatumIsporuke.HasValue)
+            {
+                <strong>Datum isporuke:</strong> @posiljka.DatumIsporuke.Value.ToString("dd.MM.yyyy")
+            }
+            else
+            {
+                <strong>Datum isporuke: Nema podataka</strong>
+            }
+        </div>
     </div>
 }
 
-<button class="btn btn-primary" @onclick="BackToList">Nazad</button>
 
 @code {
     [Parameter] public Guid Id { get; set; }

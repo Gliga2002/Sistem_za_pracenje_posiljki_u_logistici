@@ -9,15 +9,15 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div>
+    <div class="form-group">
         <label for="naziv">Naziv</label>
-        <InputText id="naziv" @bind-Value="posiljka.Naziv" />
+        <InputText id="naziv" @bind-Value="posiljka.Naziv" class="form-control"/>
         <ValidationMessage For="@(() => posiljka.Naziv)" />
     </div>
 
-    <div>
+    <div class="form-group">
         <label for="status">Status</label>
-        <InputSelect id="status" @bind-Value="posiljka.Status">
+        <InputSelect id="status" @bind-Value="posiljka.Status" class="form-control">
             @foreach (var status in Enum.GetValues<StatusPosiljke>())
             {
                 <option value="@status">@status</option>
@@ -26,19 +26,19 @@
         <ValidationMessage For="@(() => posiljka.Status)" />
     </div>
 
-    <div>
+    <div class="form-group">
         <label for="datumKreiranja">Datum kreiranja</label>
-        <InputDate id="datumKreiranja" @bind-Value="posiljka.DatumKreiranja" />
+        <InputDate id="datumKreiranja" @bind-Value="posiljka.DatumKreiranja" class="form-control"/>
         <ValidationMessage For="@(() => posiljka.DatumKreiranja)" />
     </div>
 
-    <div>
+    <div class="form-group">
         <label for="datumIsporuke">Datum isporuke</label>
-        <InputDate id="datumIsporuke" @bind-Value="posiljka.DatumIsporuke" />
+        <InputDate id="datumIsporuke" @bind-Value="posiljka.DatumIsporuke" class="form-control"/>
         <ValidationMessage For="@(() => posiljka.DatumIsporuke)" />
     </div>
 
-    <button type="submit">Spasi</button>
+    <button class="btn btn-primary" type="submit">Sacuvaj</button>
 </EditForm>
 
 @code {
