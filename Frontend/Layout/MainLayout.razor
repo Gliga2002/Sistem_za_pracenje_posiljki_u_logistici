@@ -39,8 +39,8 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        AuthService.OnAuthStateChanged += StateHasChanged;  // Prijavite se za događaj
-        await AuthService.CheckLoginStatusAsync();  // Proverite inicijalni status
+        AuthService.OnAuthStateChanged += StateHasChanged;  
+        await AuthService.CheckLoginStatusAsync();  
     }
 
     private async Task Logout()
@@ -50,6 +50,6 @@
 
     public void Dispose()
     {
-        AuthService.OnAuthStateChanged -= StateHasChanged;  // Oslobodite se događaja
+        AuthService.OnAuthStateChanged -= StateHasChanged; 
     }
 }

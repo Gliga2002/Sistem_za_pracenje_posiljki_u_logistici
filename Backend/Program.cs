@@ -1,8 +1,10 @@
+
 using Backend.Models;
 using Backend.Repositories;
 using Backend.Services;
 using FluentValidation;
 using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,16 +15,13 @@ Log.Logger = new LoggerConfiguration()
 
 
 
-// Ako hoces jednu instancu tokom cele palikacije koristi Singlton ako zelis novu instancu tokom svakog zahteva koristi Scoped. Zato imas problem sa in memory podacima!!!
- // Register repository and service
-        builder.Services.AddScoped<IPosiljkaRepository, PosiljkaRepository>();
-        builder.Services.AddScoped<PosiljkeService>();
+
+builder.Services.AddScoped<IPosiljkaRepository, PosiljkaRepository>();
+builder.Services.AddScoped<PosiljkeService>();
 
 builder.Services.AddScoped<IValidator<Posiljka>, Backend.Validators.PosiljkaValidator>();
-// Dodavanje AuthService u DI kontejner
-builder.Services.AddSingleton<AuthService>(); // Koristite AddScoped ili AddTransient ako je potrebno
 
-
+builder.Services.AddSingleton<AuthService>(); 
 
 
 builder.Services.AddControllers();
@@ -39,9 +38,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-
-
-
 var app = builder.Build();
 
 app.UseCors("AllowAll");
@@ -53,7 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Mapiranje kontrolera
+
 app.MapControllers();
 
 app.UseHttpsRedirection();

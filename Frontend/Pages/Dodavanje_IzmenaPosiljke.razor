@@ -43,16 +43,16 @@
 
 @code {
     [Parameter]
-    public Guid? Id { get; set; } // ID je opcionalan
+    public Guid? Id { get; set; } 
 
      private Posiljka posiljka = new()
     {
-        DatumKreiranja = DateTime.Today, // Početni datum na trenutni datum
+        DatumKreiranja = DateTime.Today, 
     };
 
     protected override async Task OnInitializedAsync()
     {
-        // Ako postoji ID, učitavamo podatke sa servera
+       
         if (Id.HasValue)
         {
             posiljka = await Http.GetFromJsonAsync<Posiljka>($"/api/posiljke/{Id}");
@@ -63,11 +63,11 @@
     {
         if (Id.HasValue)
         {
-            await Http.PutAsJsonAsync($"/api/posiljke/{Id}", posiljka); // Ažuriraj postojeću pošiljku
+            await Http.PutAsJsonAsync($"/api/posiljke/{Id}", posiljka); 
         }
         else
         {
-            await Http.PostAsJsonAsync("/api/posiljke", posiljka); // Dodaj novu pošiljku
+            await Http.PostAsJsonAsync("/api/posiljke", posiljka); 
         }
 
         Navigation.NavigateTo("/");

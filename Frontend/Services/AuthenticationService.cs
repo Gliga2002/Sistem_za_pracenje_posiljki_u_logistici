@@ -13,7 +13,7 @@ public class AuthService
         _jsRuntime = jsRuntime;
     }
 
-    // Proverava stanje prijave
+    
     public async Task CheckLoginStatusAsync()
     {
         var token = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "authToken");
@@ -21,7 +21,7 @@ public class AuthService
         NotifyAuthStateChanged();
     }
 
-    // Prijavljuje korisnika i postavlja token
+   
     public async Task LoginAsync(string token)
     {
         await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "authToken", token);
@@ -29,7 +29,7 @@ public class AuthService
         NotifyAuthStateChanged();
     }
 
-    // Odjavljuje korisnika
+  
     public async Task LogoutAsync()
     {
         await _jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", "authToken");

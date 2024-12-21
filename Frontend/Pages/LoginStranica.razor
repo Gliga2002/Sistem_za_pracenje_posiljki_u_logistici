@@ -40,7 +40,6 @@
             if (response.IsSuccessStatusCode)
             {
                 var token = await response.Content.ReadAsStringAsync();
-                // Spremite token u session storage
                 await JSRuntime.InvokeVoidAsync("sessionStorage.setItem", "authToken", token);
                 Navigation.NavigateTo("/");
             }

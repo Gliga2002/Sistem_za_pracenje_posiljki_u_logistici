@@ -30,7 +30,7 @@ namespace Frontend.Models
         Uskladistu
     }
 
-    // Custom validacija za DatumIsporuke
+
     public class FutureDateAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)

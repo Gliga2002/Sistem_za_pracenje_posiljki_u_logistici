@@ -46,18 +46,18 @@ else
     {
         try
         {
-            // GET zahtev prema backendu da preuzmemo detalje pošiljke
+            
             posiljka = await Http.GetFromJsonAsync<Posiljka>($"/api/posiljke/{Id}");
         }
         catch (Exception ex)
         {
-            // U slučaju greške, možete prikazati poruku ili obraditi grešku
+            
             Console.WriteLine($"Greška pri učitavanju podataka: {ex.Message}");
         }
     }
 
     private void BackToList()
     {
-        Navigation.NavigateTo("/"); // Vratite se na listu pošiljki
+        Navigation.NavigateTo("/"); 
     }
 }
