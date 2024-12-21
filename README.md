@@ -43,7 +43,7 @@ Backend aplikacija je podeljena na sledeće slojeve:
   - Datum isporuke mora biti u budućnosti.
 - **Program.cs:** Podešava sve servise, uključujući CORS policy.
 
-Posebno je implementiran **Controller za autentifikaciju** koji prima kredencijale sa frontenda, validira ih i vraća JWT token.
+Posebno je implementiran **Controller za autentifikaciju** koji prima kredencijale sa frontenda, validira ih i vraća dummy token kao string. Autentifikaciaj je jednostavna, sadrzi jednu rutu za prihvatanje login requesta, i automatski genereise i salje nazad token. Autentifikacija je improvizovana, za potpuno autentifikaciju neophodna je registracija, login, generisanje tokena kao i cuvanje podataka korisnika u bazi.
 
 ## Arhitektura Frontenda
 
